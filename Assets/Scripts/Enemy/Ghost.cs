@@ -31,7 +31,7 @@ public class Ghost : MonoBehaviour
     private void Update()
     {      
         if (_detectorPlayer.IsPlayerVisible)
-            CheckAttackZone();
+            UpdateAttackState();
     }
 
     private void OnDrawGizmos()
@@ -50,7 +50,7 @@ public class Ghost : MonoBehaviour
        _health.TakeDamage(damage);
     }
 
-    private void CheckAttackZone()
+    private void UpdateAttackState()
     {
         if (Physics2D.OverlapCircle(_attackPosition.position, _attackRadius, LayerMask.GetMask("Player")))
         {   
