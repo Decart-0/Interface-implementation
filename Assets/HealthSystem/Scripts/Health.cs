@@ -11,25 +11,19 @@ public class Health : MonoBehaviour
 
     public void Restore(float amount)
     {
-        Value += amount;
-
-        if (Value > MaxValue)
+        if (amount > 0) 
         {
-            Value = MaxValue; 
+            Value = Mathf.Min(Value + amount, MaxValue);
+            Changed?.Invoke();
         }
-
-        Changed?.Invoke();
     }
 
     public void TakeDamage(float damage)
     {
-        Value -= damage;       
-
-        if (Value <= 0)
+        if (damage > 0) 
         {
-            Value = 0;
+            Value = Mathf.Max(Value - damage, 0);
+            Changed?.Invoke();
         }
-
-        Changed?.Invoke();
     }
 }
