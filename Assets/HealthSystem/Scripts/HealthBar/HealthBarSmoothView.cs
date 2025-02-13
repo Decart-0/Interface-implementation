@@ -34,11 +34,13 @@ public class HealthBarSmoothView : HealthBarView<Slider>
 
     private IEnumerator UpdateSmoothly() 
     { 
-        while (true) 
+        while (Bar.value != Health.Value) 
         {
             Bar.value = Mathf.MoveTowards(Bar.value, Health.Value, _smoothSpeed * Time.deltaTime);
             
             yield return null;
         }
+
+        _updateSmoothly = null;
     }
 }
