@@ -1,13 +1,20 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerAnimator))]
 public class DetectorGround : MonoBehaviour
 {
+    PlayerAnimator _playerAnimator;
     private int _currentAmountGround = 0;
 
     public event Action GroundStatusChanged;
 
     public bool IsOnGround => _currentAmountGround > 0;
+
+    private void Awake()
+    {
+        _playerAnimator = GetComponent<PlayerAnimator>();    
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -15,6 +22,8 @@ public class DetectorGround : MonoBehaviour
         {
             _currentAmountGround++;
             GroundStatusChanged?.Invoke();
+            _playerAnimator.SetupIsOnGround(IsOnGround);
+
         }
     }
 
@@ -24,6 +33,7 @@ public class DetectorGround : MonoBehaviour
         {
             _currentAmountGround--;
             GroundStatusChanged?.Invoke();
+            _playerAnimator.SetupIsOnGround(IsOnGround);
         }
     }
 }

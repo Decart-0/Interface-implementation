@@ -5,6 +5,7 @@ using Color = UnityEngine.Color;
 
 [RequireComponent(typeof(InputScheme))]
 [RequireComponent(typeof(Health))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _damage;
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _attackRadius;
     [SerializeField] private Transform _attackPosition;
 
+    private PlayerAnimator _playerAnimator;
     private InputScheme _inputScheme;
     private Health _health;
     private bool _isCooldown;
@@ -24,6 +26,7 @@ public class Player : MonoBehaviour
     {
         _inputScheme = GetComponent<InputScheme>();
         _health = GetComponent<Health>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
         _isCooldown = false;
     }
 
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour
         _isCooldown = true;
         IsAttack = true;
         Attacking?.Invoke();
+        _playerAnimator.SetupAttack();
         Attack();
         StartCoroutine(WaitAttack());
     }
