@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
-[RequireComponent(typeof(InputScheme))]
+[RequireComponent(typeof(InputService))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _attackPosition;
 
     private PlayerAnimator _playerAnimator;
-    private InputScheme _inputScheme;
+    private InputService _inputService;
     private Health _health;
     private bool _isCooldown;
 
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _inputScheme = GetComponent<InputScheme>();
+        _inputService = GetComponent<InputService>();
         _health = GetComponent<Health>();
         _playerAnimator = GetComponent<PlayerAnimator>();
         _isCooldown = false;
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_inputScheme.Attack) && _isCooldown == false) 
+        if (_inputService.IsAttackPressed() && _isCooldown == false) 
         {
             StartAttack();
         }
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         _isCooldown = true;
         IsAttack = true;
         Attacking?.Invoke();
-        _playerAnimator.SetupAttack();
+        _playerAnimator.PlayHit();
         Attack();
         StartCoroutine(WaitAttack());
     }

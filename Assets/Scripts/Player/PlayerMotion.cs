@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(DetectorGround))]
-[RequireComponent(typeof(InputScheme))]
+[RequireComponent(typeof(InputService))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(PlayerFlipper))]
+[RequireComponent(typeof(HorizontalFlipper))]
 [RequireComponent(typeof(PlayerAnimator))]
 public class PlayerMotion : MonoBehaviour
 {
@@ -14,10 +14,10 @@ public class PlayerMotion : MonoBehaviour
     private bool _isOnGround;
     private float _direction;
 
-    private InputScheme _inputScheme;
+    private InputService _inputService;
     private Rigidbody2D _rigidbody;
     private DetectorGround _detectorGround;
-    private PlayerFlipper _playerFlipper;
+    private HorizontalFlipper _horizontalFlipper;
     private PlayerAnimator _playerAnimator;
 
     public event Action Moving;
@@ -25,9 +25,9 @@ public class PlayerMotion : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _inputScheme = GetComponent<InputScheme>();
+        _inputService = GetComponent<InputService>();
         _detectorGround = GetComponent<DetectorGround>();
-        _playerFlipper = GetComponent<PlayerFlipper>();
+        _horizontalFlipper = GetComponent<HorizontalFlipper>();
         _playerAnimator = GetComponent<PlayerAnimator>();
         _isOnGround = true;
     }
@@ -41,9 +41,9 @@ public class PlayerMotion : MonoBehaviour
     {
         Move();
         Moving?.Invoke();
-        _playerAnimator.SetupMotion(_direction);
+        _playerAnimator.PlayRun(_direction);
 
-        if (Input.GetKeyDown(_inputScheme.Jump) && _isOnGround)
+        if (_inputService.IsJumpPressed() && _isOnGround)
         {
             Jump();
         }
@@ -61,12 +61,12 @@ public class PlayerMotion : MonoBehaviour
 
     private void Move()
     {
-        _direction = Input.GetAxis(_inputScheme.AxisHorizontal);
+        _direction = _inputService.GetMovementInput();
 
         if (_direction != 0)
         {
             _rigidbody.velocity = new Vector2(_direction * _speed, _rigidbody.velocity.y);
-            _playerFlipper.Flip(_direction);
+            _horizontalFlipper.Flip(_direction);
         }
     }
 

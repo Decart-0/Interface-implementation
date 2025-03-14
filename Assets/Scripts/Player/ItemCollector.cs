@@ -23,22 +23,7 @@ public class ItemCollector : MonoBehaviour
 
     private void Pickup(IPickupable iPickupable)
     {
-        switch (iPickupable) 
-        {
-            case FirstAidKit firstAidKit:
-                if (_healthPlayer.MaxValue - _healthPlayer.Value > 0)
-                {
-                    _healthPlayer.Restore(firstAidKit.Value);
-                    firstAidKit.Delete();
-                }
-
-                break;
-
-            case Coin coin:
-                _wallet.AddCoins(coin.Value);
-                coin.Delete();
-
-                break;
-        }
+        var visitor = new PickupVisitor(_healthPlayer, _wallet);
+        iPickupable.Accept(visitor);
     }
 }

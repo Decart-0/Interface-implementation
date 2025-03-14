@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAnimator))]
 public class DetectorGround : MonoBehaviour
 {
-    PlayerAnimator _playerAnimator;
+    private PlayerAnimator _playerAnimator;
     private int _currentAmountGround = 0;
 
     public event Action GroundStatusChanged;
@@ -22,7 +22,7 @@ public class DetectorGround : MonoBehaviour
         {
             _currentAmountGround++;
             GroundStatusChanged?.Invoke();
-            _playerAnimator.SetupIsOnGround(IsOnGround);
+            _playerAnimator.PlayJump(IsOnGround);
 
         }
     }
@@ -33,7 +33,7 @@ public class DetectorGround : MonoBehaviour
         {
             _currentAmountGround--;
             GroundStatusChanged?.Invoke();
-            _playerAnimator.SetupIsOnGround(IsOnGround);
+            _playerAnimator.PlayJump(IsOnGround);
         }
     }
 }

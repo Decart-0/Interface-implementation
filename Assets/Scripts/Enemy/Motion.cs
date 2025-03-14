@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(DetectorPlayer))]
-public class EnemyMotion : MonoBehaviour
+public class Motion : MonoBehaviour
 {
     private const float AngleLeft = 180f;
 
@@ -32,7 +32,7 @@ public class EnemyMotion : MonoBehaviour
 
     private void OnEnable()
     {
-        _detectorPlayer.SawPlayer += UpdateStatusVisible;
+        _detectorPlayer.PlayerSeen += UpdateStatusVisible;
     }
 
     private void Start()
@@ -49,7 +49,7 @@ public class EnemyMotion : MonoBehaviour
 
     private void OnDisable()
     {
-        _detectorPlayer.SawPlayer -= UpdateStatusVisible;
+        _detectorPlayer.PlayerSeen -= UpdateStatusVisible;
     }
 
     private void UpdateStatusVisible()
@@ -64,7 +64,7 @@ public class EnemyMotion : MonoBehaviour
         float targetX = Mathf.MoveTowards(transform.position.x, targetPoint.position.x, _speed * Time.deltaTime);
         transform.position = new Vector2(targetX, transform.position.y);
 
-        if (Mathf.Abs(transform.position.x - targetPoint.position.x) < 0.1f && !_isWaiting)
+        if (Mathf.Abs(transform.position.x - targetPoint.position.x) < 0.1f && _isWaiting == false)
         {
             StartCoroutine(WaitAtPoint());
         }

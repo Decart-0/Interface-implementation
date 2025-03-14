@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DetectorPlayer : MonoBehaviour
 {
-    public event Action SawPlayer;
+    public event Action PlayerSeen;
 
     public bool IsPlayerVisible { get; private set; }
 
@@ -16,20 +16,20 @@ public class DetectorPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {     
-        if (collider.TryGetComponent(out Health healthPlayer))
+        if (collider.TryGetComponent(out Player player))
         {
-            HealthPlayer = healthPlayer;
+            HealthPlayer = player.GetComponent<Health>();
             IsPlayerVisible = true;
-            SawPlayer?.Invoke();
+            PlayerSeen?.Invoke();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.GetComponent<Health>())
+        if (collider.GetComponent<Player>())
         {
            IsPlayerVisible = false;
-           SawPlayer?.Invoke();
+           PlayerSeen?.Invoke();
         }
     }
 }

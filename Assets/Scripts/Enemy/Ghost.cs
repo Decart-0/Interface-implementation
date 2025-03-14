@@ -10,6 +10,7 @@ public class Ghost : MonoBehaviour
     [SerializeField] private float _damage;
     [SerializeField] private float _cooldownAttack;
     [SerializeField] private float _attackRadius;
+    [SerializeField] private LayerMask _playerLayer;
 
     private DetectorPlayer _detectorPlayer;
     private Health _health;
@@ -52,7 +53,7 @@ public class Ghost : MonoBehaviour
 
     private void UpdateAttackState()
     {
-        if (Physics2D.OverlapCircle(_attackPosition.position, _attackRadius, LayerMask.GetMask("Player")))
+        if (Physics2D.OverlapCircle(_attackPosition.position, _attackRadius, _playerLayer))
         {   
             StartAttack();           
         }

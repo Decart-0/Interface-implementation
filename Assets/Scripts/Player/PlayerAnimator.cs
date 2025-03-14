@@ -10,17 +10,17 @@ public class PlayerAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void SetupMotion(float speed)
+    public void PlayRun(float speed)
     {
         _animator.SetFloat(AnimatorData.Params.Speed, Mathf.Abs(speed));       
     }
 
-    public void SetupIsOnGround(bool isOnGround) 
+    public void PlayJump(bool isOnGround) 
     { 
         _animator.SetBool(AnimatorData.Params.IsGrounded, isOnGround);
     }
 
-    public void SetupAttack()
+    public void PlayHit()
     {
         _animator.SetTrigger(AnimatorData.Params.Attack);
     }

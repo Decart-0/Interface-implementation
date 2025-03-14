@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerFlipper : MonoBehaviour
+public class HorizontalFlipper : MonoBehaviour
 {
     private const float AngleRight = 0f;
     private const float AngleLeft = 180f;
