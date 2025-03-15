@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (_inputService.IsAttackPressed() && _isCooldown == false) 
+        if (_inputService.IsHitPressed() && _isCooldown == false) 
         {
             StartAttack();
         }

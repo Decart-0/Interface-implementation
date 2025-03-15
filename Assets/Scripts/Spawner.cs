@@ -7,7 +7,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 
     private Transform[] _places;
 
-    private void Awake()
+    protected void Awake()
     {
         _places = new Transform[_spawnPoints.childCount];
 
@@ -17,7 +17,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    private void Start()
+    protected void Create()
     {
         for (int i = 0; i < _places.Length; i++)
         {

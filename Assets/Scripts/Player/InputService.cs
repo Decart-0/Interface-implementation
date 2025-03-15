@@ -20,8 +20,13 @@ public class InputService : MonoBehaviour
         return Input.GetKeyDown(_inputScheme.Jump);
     }
 
-    public bool IsAttackPressed()
+    public bool IsHitPressed()
     {
-        return Input.GetKeyDown(_inputScheme.Attack);
+        return Input.GetKeyDown(_inputScheme.Hit);
+    }
+
+    public bool IsVampirismPressed()
+    {
+        return Input.GetKeyDown(_inputScheme.Vampirism);
     }
 }
