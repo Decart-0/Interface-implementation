@@ -35,15 +35,6 @@ public class SpawnerProjectile : Spawner<Vampirism>
         _inputService.VampirismPressed -= StartVampirism;
     }
 
-    protected override void Create() 
-    {
-        for (int i = 0; i < _places.Length; i++)
-        {
-            var vampirism = Instantiate(_prefab, _places[i].position, Quaternion.identity);
-            vampirism.transform.SetParent(transform.GetChild(0));
-        }
-    }
-
     private void StartVampirism() 
     {
         if (_coroutine == null) 

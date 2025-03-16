@@ -3,9 +3,9 @@ using UnityEngine;
 public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoints;
-    [field:SerializeField] protected T _prefab { get; private set; }
+    [SerializeField] private T _prefab;
 
-    protected Transform[] _places { get; private set; }
+    private Transform[] _places;
 
     protected void Awake()
     {
@@ -17,11 +17,21 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    protected virtual void Create()
+    protected void Create()
     {
         for (int i = 0; i < _places.Length; i++)
         {
-            Instantiate(_prefab, _places[i].position, Quaternion.identity);
+            var prefab = Instantiate(_prefab, _places[i].position, Quaternion.identity);
+
+            if (_spawnPoints != null)
+            {
+                prefab.transform.SetParent(_spawnPoints);
+            }
+            else
+            {
+
+                prefab.transform.SetParent(null);
+            }
         }
     }
 }
