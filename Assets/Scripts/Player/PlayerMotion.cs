@@ -35,6 +35,7 @@ public class PlayerMotion : MonoBehaviour
     private void OnEnable()
     {
         _detectorGround.GroundStatusChanged += UpdateIsGround;
+        _inputService.JumpPressed += Jump;
     }
 
     private void Update()
@@ -42,16 +43,12 @@ public class PlayerMotion : MonoBehaviour
         Move();
         Moving?.Invoke();
         _playerAnimator.PlayRun(_direction);
-
-        if (_inputService.IsJumpPressed() && _isOnGround)
-        {
-            Jump();
-        }
     }
 
     private void OnDisable()
     {
         _detectorGround.GroundStatusChanged -= UpdateIsGround;
+        _inputService.JumpPressed -= Jump;
     }
 
     public void UpdateIsGround()
@@ -72,6 +69,9 @@ public class PlayerMotion : MonoBehaviour
 
     private void Jump()
     {
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+        if (_isOnGround) 
+        { 
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+        }
     }
 }

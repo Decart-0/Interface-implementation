@@ -3,9 +3,9 @@ using UnityEngine;
 public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoints;
-    [SerializeField] private T _prefab;
+    [field:SerializeField] protected T _prefab { get; private set; }
 
-    private Transform[] _places;
+    protected Transform[] _places { get; private set; }
 
     protected void Awake()
     {
@@ -17,7 +17,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    protected void Create()
+    protected virtual void Create()
     {
         for (int i = 0; i < _places.Length; i++)
         {

@@ -16,7 +16,7 @@ public class Vampirism : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(WaitMove());
+        StartCoroutine(WaitWork());
     }
 
     private void Die()
@@ -24,26 +24,7 @@ public class Vampirism : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private IEnumerator WaitMove() 
-    {
-        yield return new WaitForSeconds(_initialDelay);
-   
-        WaitForSeconds waitInterval = new WaitForSeconds(_timeInterval);
-        float elapsedTime = 0f;
-
-        while (elapsedTime < _timeDuration) 
-        {
-            transform.Translate(_player.right * _distance);
-            elapsedTime += _timeInterval;
-
-            yield return waitInterval;
-        }
-
-        transform.localScale *= _scaleMultiplier;
-        StartCoroutine(WaiWork());
-    }
-
-    private IEnumerator WaiWork() 
+    private IEnumerator WaitWork() 
     {
         for (int i = 0; i < _timeWork; i++)
         {

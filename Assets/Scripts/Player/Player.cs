@@ -33,14 +33,7 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _health.Changed += CheckHealth;
-    }
-
-    private void Update()
-    {
-        if (_inputService.IsHitPressed() && _isCooldown == false) 
-        {
-            StartAttack();
-        }
+        _inputService.HitPressed += StartAttack;
     }
 
     private void OnDrawGizmos()
@@ -52,6 +45,7 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         _health.Changed -= CheckHealth;
+        _inputService.HitPressed -= StartAttack;
     }
 
     private void Attack() 
@@ -68,13 +62,16 @@ public class Player : MonoBehaviour
     }
 
     private void StartAttack()
-    {   
-        _isCooldown = true;
-        IsAttack = true;
-        Attacking?.Invoke();
-        _playerAnimator.PlayHit();
-        Attack();
-        StartCoroutine(WaitAttack());
+    {
+        if (_isCooldown == false) 
+        {
+            _isCooldown = true;
+            IsAttack = true;
+            Attacking?.Invoke();
+            _playerAnimator.PlayHit();
+            Attack();
+            StartCoroutine(WaitAttack());
+        } 
     }
 
     private void CheckHealth()

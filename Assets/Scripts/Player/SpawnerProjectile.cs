@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(InputService))]
-public class SpawnerProjectile : Spawner<Vampirism> 
+public class SpawnerProjectile : Spawner<Vampirism>
 {
     [SerializeField] private float _timeCoolddown = 4f;
     [SerializeField] private float _timeInterval = 1f;
@@ -14,10 +14,15 @@ public class SpawnerProjectile : Spawner<Vampirism>
 
     public event Action<float> Changed;
 
-    protected void Awake() 
+    protected void Awake()
     {
         base.Awake();
         _inputService = GetComponent<InputService>();
+    }
+
+    private void OnEnable()
+    {
+        _inputService.VampirismPressed += StartVampirism;
     }
 
     protected void Start()
@@ -25,10 +30,24 @@ public class SpawnerProjectile : Spawner<Vampirism>
         _time = _timeCoolddown;
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if(_inputService.IsVampirismPressed() && _coroutine == null) 
+        _inputService.VampirismPressed -= StartVampirism;
+    }
+
+    protected override void Create() 
+    {
+        for (int i = 0; i < _places.Length; i++)
         {
+            var vampirism = Instantiate(_prefab, _places[i].position, Quaternion.identity);
+            vampirism.transform.SetParent(transform.GetChild(0));
+        }
+    }
+
+    private void StartVampirism() 
+    {
+        if (_coroutine == null) 
+        { 
             Create();
             _coroutine = StartCoroutine(WaiÑoolddown());
         }
