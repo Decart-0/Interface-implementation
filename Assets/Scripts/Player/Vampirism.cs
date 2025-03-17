@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(ScannerEnemie))]
 public class Vampirism : MonoBehaviour
 {
     [SerializeField] private float _timeWork = 6f;
@@ -9,6 +10,7 @@ public class Vampirism : MonoBehaviour
     [SerializeField] private Health _playerHealth;
 
     private WaitForSeconds _waitInterval;
+    private ScannerEnemie _scannerEnemie;
 
     [field:SerializeField] public float TimeInterval { get; private set; } = 1f;
 
@@ -19,7 +21,8 @@ public class Vampirism : MonoBehaviour
     private void Start()
     {
         _waitInterval = new WaitForSeconds(TimeInterval);
-        StartCoroutine(WaitWork());
+        _scannerEnemie = GetComponent<ScannerEnemie>();
+        StartCoroutine(Work());
     }
 
     private void Die()
@@ -28,19 +31,16 @@ public class Vampirism : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private IEnumerator WaitWork() 
+    private IEnumerator Work() 
     {
         for (int i = 0; i < _timeWork; i++)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x);
+            Ghost nearestGhost = _scannerEnemie.FindNearestGhost(transform.position);
 
-            foreach (Collider2D collider in colliders)
+            if (nearestGhost != null)
             {
-                if (collider.TryGetComponent(out Ghost ghost))
-                {
-                    ghost.TakeDamage(_damage);
-                    _playerHealth.Restore(_damage);
-                }
+                nearestGhost.TakeDamage(_damage);
+                _playerHealth.Restore(_damage);
             }
 
             yield return _waitInterval;
