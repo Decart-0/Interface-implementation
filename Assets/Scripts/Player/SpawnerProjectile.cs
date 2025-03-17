@@ -5,10 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(InputService))]
 public class SpawnerProjectile : Spawner<Vampirism>
 {
-    [SerializeField] private float _timeCoolddown = 4f;
-    [SerializeField] private float _timeInterval = 1f;
-
     private float _time;
+    private bool _isVampirismActive = false;
+    private WaitForSeconds _waitInterval;
     private InputService _inputService;
     private Coroutine _coroutine;
 
@@ -18,6 +17,8 @@ public class SpawnerProjectile : Spawner<Vampirism>
     {
         base.Awake();
         _inputService = GetComponent<InputService>();
+        _waitInterval = new WaitForSeconds(Prefab.TimeInterval);
+        _time = Prefab.TimeCoolddown;
     }
 
     private void OnEnable()
@@ -25,39 +26,58 @@ public class SpawnerProjectile : Spawner<Vampirism>
         _inputService.VampirismPressed += StartVampirism;
     }
 
-    protected void Start()
-    {
-        _time = _timeCoolddown;
-    }
-
     private void OnDisable()
     {
         _inputService.VampirismPressed -= StartVampirism;
     }
 
+    protected override void Create()
+    {
+        for (int i = 0; i < Places.Length; i++)
+        {
+            var prefab = Instantiate(Prefab, Places[i].position, Quaternion.identity);
+            prefab.OnDestroyed += VampirismDestroyed;
+            _isVampirismActive = true;
+            
+            if (SpawnPoints != null)
+            {
+                prefab.transform.SetParent(SpawnPoints);
+            }
+            else
+            {
+
+                prefab.transform.SetParent(null);
+            }
+        }
+        
+    }
+
+    private void VampirismDestroyed()
+    {
+        _coroutine = StartCoroutine(WaitÑoolddown());
+        _isVampirismActive = false;
+    }
+
     private void StartVampirism() 
     {
-        if (_coroutine == null) 
-        { 
+        if (_isVampirismActive == false && _coroutine == null)
+        {
             Create();
-            _coroutine = StartCoroutine(WaiÑoolddown());
         }
     }
 
-    private IEnumerator WaiÑoolddown()
+    private IEnumerator WaitÑoolddown()
     {
-        WaitForSeconds waitInterval = new WaitForSeconds(_timeInterval);
-
         while (_time > 0) 
         {
             _time--;
             Changed?.Invoke(_time);
 
-            yield return waitInterval;
+            yield return _waitInterval;
         }   
 
         _coroutine = null;
-        _time = _timeCoolddown;
+        _time = Prefab.TimeCoolddown;
         Changed?.Invoke(_time);
     }
 }

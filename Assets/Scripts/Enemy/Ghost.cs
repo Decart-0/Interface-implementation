@@ -16,12 +16,14 @@ public class Ghost : MonoBehaviour
     private Health _health;
     private GhostAnimator _animator;
     private Coroutine _attackCoroutine;
+    private WaitForSeconds _waitForSeconds;
 
     private void Awake()
     {
         _detectorPlayer = GetComponent<DetectorPlayer>();
         _health = GetComponent<Health>();
         _animator = GetComponent<GhostAnimator>();
+        _waitForSeconds = new WaitForSeconds(_cooldownAttack);
     }
 
     private void OnEnable()
@@ -101,7 +103,7 @@ public class Ghost : MonoBehaviour
             _animator.PlayAttackAnimation();
             _detectorPlayer.HealthPlayer.TakeDamage(_damage);
 
-            yield return new WaitForSeconds(_cooldownAttack);
+            yield return _waitForSeconds;
         }
     }
 }

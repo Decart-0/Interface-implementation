@@ -1,26 +1,30 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Vampirism : MonoBehaviour
 {
-    [SerializeField] private float _distance = 1f;
-    [SerializeField] private float _timeInterval = 1f;
-    [SerializeField] private float _intervalWork = 1f;
-    [SerializeField] private float _timeDuration = 2f;
     [SerializeField] private float _timeWork = 6f;
     [SerializeField] private float _damage = 5f;
-    [SerializeField] private float _scaleMultiplier = 2f;
-    [SerializeField] private float _initialDelay = 0.1f;
+    [SerializeField] private Health _playerHealth;
 
-    [SerializeField] private Transform _player;
+    private WaitForSeconds _waitInterval;
+
+    [field:SerializeField] public float TimeInterval { get; private set; } = 1f;
+
+    [field: SerializeField] public float TimeCoolddown { get; private set; } = 4f;
+
+    public event Action OnDestroyed;
 
     private void Start()
     {
+        _waitInterval = new WaitForSeconds(TimeInterval);
         StartCoroutine(WaitWork());
     }
 
     private void Die()
     {
+        OnDestroyed?.Invoke();
         Destroy(gameObject);
     }
 
@@ -35,10 +39,11 @@ public class Vampirism : MonoBehaviour
                 if (collider.TryGetComponent(out Ghost ghost))
                 {
                     ghost.TakeDamage(_damage);
+                    _playerHealth.Restore(_damage);
                 }
             }
 
-            yield return new WaitForSeconds(_intervalWork);
+            yield return _waitInterval;
         }
 
         Die();

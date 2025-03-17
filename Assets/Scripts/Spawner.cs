@@ -2,30 +2,30 @@ using UnityEngine;
 
 public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] private Transform _spawnPoints;
-    [SerializeField] private T _prefab;
+    [SerializeField] protected Transform SpawnPoints;
+    [SerializeField] protected T Prefab;
 
-    private Transform[] _places;
+    protected Transform[] Places;
 
     protected void Awake()
     {
-        _places = new Transform[_spawnPoints.childCount];
+        Places = new Transform[SpawnPoints.childCount];
 
-        for (int i = 0; i < _places.Length; i++)
+        for (int i = 0; i < Places.Length; i++)
         {
-            _places[i] = _spawnPoints.GetChild(i);
+            Places[i] = SpawnPoints.GetChild(i);
         }
     }
 
-    protected void Create()
+    protected virtual void Create()
     {
-        for (int i = 0; i < _places.Length; i++)
+        for (int i = 0; i < Places.Length; i++)
         {
-            var prefab = Instantiate(_prefab, _places[i].position, Quaternion.identity);
+            var prefab = Instantiate(Prefab, Places[i].position, Quaternion.identity);
 
-            if (_spawnPoints != null)
+            if (SpawnPoints != null)
             {
-                prefab.transform.SetParent(_spawnPoints);
+                prefab.transform.SetParent(SpawnPoints);
             }
             else
             {

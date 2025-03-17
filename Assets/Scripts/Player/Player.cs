@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     private PlayerAnimator _playerAnimator;
     private InputService _inputService;
+    private WaitForSeconds _waitForSeconds;
     private Health _health;
     private bool _isCooldown;
 
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
         _inputService = GetComponent<InputService>();
         _health = GetComponent<Health>();
         _playerAnimator = GetComponent<PlayerAnimator>();
+        _waitForSeconds = new WaitForSeconds(_cooldownAttack);
         _isCooldown = false;
     }
 
@@ -89,7 +91,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitAttack()
     {
-        yield return new WaitForSeconds(_cooldownAttack);
+        yield return _waitForSeconds;
         
         _isCooldown = false;
         IsAttack = false;

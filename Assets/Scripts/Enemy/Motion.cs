@@ -12,6 +12,7 @@ public class Motion : MonoBehaviour
     [SerializeField] private Transform _targetPoint;
 
     private DetectorPlayer _detectorPlayer;
+    private WaitForSeconds _waitForSeconds;
     private Transform[] _targetPoints;
     private int _currentPointIndex;
     private bool _isWaiting;
@@ -20,6 +21,7 @@ public class Motion : MonoBehaviour
     private void Awake()
     {
         _detectorPlayer = GetComponent<DetectorPlayer>();
+        _waitForSeconds = new WaitForSeconds(_waitTime);
         _targetPoints = new Transform[_targetPoint.childCount];
         _isWaiting = false;
         _isVisiblePlayer = false;
@@ -100,7 +102,7 @@ public class Motion : MonoBehaviour
     {
         _isWaiting = true;
 
-        yield return new WaitForSeconds(_waitTime);
+        yield return _waitForSeconds;
 
         _currentPointIndex = (_currentPointIndex + 1) % _targetPoints.Length;
         _isWaiting = false;
