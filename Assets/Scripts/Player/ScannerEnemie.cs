@@ -40,12 +40,15 @@ public class ScannerEnemie : MonoBehaviour
             {
                 continue;
             }
-                
-            float distance = Vector2.Distance(position, ghost.transform.position);
 
-            if (distance < nearestDistance)
+            Vector3 ghostPosition = ghost.transform.position;
+            Vector2 ghostPosition2D = new Vector2(ghostPosition.x, ghostPosition.y);
+            Vector2 offset = ghostPosition2D - position;
+            float distanceSqr = offset.sqrMagnitude;
+
+            if (distanceSqr < nearestDistance)
             {
-                nearestDistance = distance;
+                nearestDistance = distanceSqr;
                 nearestGhost = ghost;
             }
         }
