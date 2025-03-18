@@ -18,18 +18,17 @@ public class DetectorGround : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.GetComponent<Ground>())
+        if (collider.TryGetComponent<Ground>(out Ground ground))
         {
             _currentAmountGround++;
             GroundStatusChanged?.Invoke();
             _playerAnimator.PlayJump(IsOnGround);
-
         }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.GetComponent<Ground>())
+        if (collider.TryGetComponent<Ground>(out Ground ground))
         {
             _currentAmountGround--;
             GroundStatusChanged?.Invoke();
