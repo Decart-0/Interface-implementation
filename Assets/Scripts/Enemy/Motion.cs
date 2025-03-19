@@ -34,7 +34,7 @@ public class Motion : MonoBehaviour
 
     private void OnEnable()
     {
-        _detectorPlayer.PlayerSeen += UpdateStatusVisible;
+        _detectorPlayer.PlayerSeeing += UpdateStatusVisible;
     }
 
     private void Start()
@@ -51,7 +51,7 @@ public class Motion : MonoBehaviour
 
     private void OnDisable()
     {
-        _detectorPlayer.PlayerSeen -= UpdateStatusVisible;
+        _detectorPlayer.PlayerSeeing -= UpdateStatusVisible;
     }
 
     private void UpdateStatusVisible()

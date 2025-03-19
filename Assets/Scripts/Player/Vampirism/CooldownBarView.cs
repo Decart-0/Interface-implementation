@@ -10,7 +10,7 @@ public class CooldownBarView : MonoBehaviour
     private void Start()
     {
         _slider.maxValue = _timeCooldown;
-        _slider.value = _slider.maxValue; 
+        _slider.value = _slider.maxValue;
     }
 
     private void OnEnable()

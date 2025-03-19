@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DetectorPlayer : MonoBehaviour
 {
-    public event Action PlayerSeen;
+    public event Action PlayerSeeing;
 
     public bool IsPlayerVisible { get; private set; }
 
@@ -20,7 +20,7 @@ public class DetectorPlayer : MonoBehaviour
         {
             HealthPlayer = player.GetComponent<Health>();
             IsPlayerVisible = true;
-            PlayerSeen?.Invoke();
+            PlayerSeeing?.Invoke();
         }
     }
 
@@ -29,7 +29,7 @@ public class DetectorPlayer : MonoBehaviour
         if (collider.GetComponent<Player>())
         {
            IsPlayerVisible = false;
-           PlayerSeen?.Invoke();
+           PlayerSeeing?.Invoke();
         }
     }
 }

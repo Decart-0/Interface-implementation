@@ -10,6 +10,11 @@ public abstract class HealthBarView<T> : MonoBehaviour
         Health.Changed += ChangeHealth;
     }
 
+    private void Update()
+    {
+        transform.rotation = Quaternion.identity;
+    }
+
     private void OnDisable()
     {
         Health.Changed -= ChangeHealth;
